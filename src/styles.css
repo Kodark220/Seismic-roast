@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Space Grotesk", sans-serif;
+  background:
+    radial-gradient(1000px 620px at 8% 12%, #1a1a27 0%, transparent 58%),
+    radial-gradient(800px 520px at 92% 88%, #11111a 0%, transparent 60%),
+    #0b0b0f;
+}
+
+@layer components {
+  .seismic-shell {
+    @apply min-h-screen px-4 py-5 md:py-8;
+  }
+
+  .seismic-card {
+    @apply mx-auto w-full max-w-4xl rounded-3xl border border-seismic-300/40 bg-[#111118]/85 p-5 md:p-7 shadow-card backdrop-blur;
+  }
+
+  .seismic-btn {
+    @apply rounded-xl border border-seismic-300/30 bg-black/25 px-4 py-2 text-sm font-semibold text-seismic-50 transition hover:border-seismic-300 hover:bg-seismic-700/40;
+  }
+
+  .seismic-btn-primary {
+    @apply seismic-btn border-transparent bg-gradient-to-r from-seismic-500 to-seismic-300 text-black hover:opacity-90;
+  }
+
+  .seismic-input {
+    @apply w-full rounded-xl border border-seismic-300/35 bg-black/20 px-4 py-2.5 text-seismic-50 outline-none placeholder:text-seismic-100/60 focus:border-seismic-300;
+  }
+}

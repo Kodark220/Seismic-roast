@@ -1,52 +1,19 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get Roasted | Seismic</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260226r5" />
-</head>
-<body>
-  <main class="app-shell">
-    <section class="card" id="quiz-card">
-      <header class="top">
-        <img class="brand-logo" src="assets/seismic-icon.svg" alt="Seismic" />
-        <h1>Get Roasted</h1>
-        <p class="sub">5 fast questions. 1 brutal diagnosis.</p>
-      </header>
-
-      <section id="landing-view">
-        <h2 class="question-title">Enter Username to Start</h2>
-        <form id="landing-form" class="community-form">
-          <input id="landing-username-input" class="username-input" type="text" maxlength="24" placeholder="@yourname" autocomplete="off" />
-          <button class="action primary" type="submit">Enter Game</button>
-        </form>
-        <p id="landing-note" class="community-note hidden"></p>
-      </section>
-
-      <div class="progress-wrap hidden" id="progress-wrap">
-        <div class="progress-label" id="progress-label">Question 1 of 5</div>
-        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-      </div>
-
-      <section id="question-view" class="hidden"></section>
-      <section id="result-view" class="hidden"></section>
-    </section>
-  </main>
-
-  <canvas id="share-canvas" width="1200" height="628" class="hidden"></canvas>
-  <script src="score-card-data.js?v=20260226r1"></script>
-  <script src="supabase-config.js"></script>
-  <script src="app.js?v=20260226r8"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Roasted | Seismic</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/supabase-config.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
-
-
-
-
-
-
-

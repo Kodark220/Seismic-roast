@@ -475,7 +475,7 @@ shareLogo.src = 'assets/seismic-icon.svg';
 const shareLogoBg = new Image();
 shareLogoBg.src = 'assets/seismic-icon.svg';
 const shareCardBg = new Image();
-shareCardBg.src = window.SCORE_CARD_DATA_URL || 'assets/score-card.png';
+shareCardBg.src = 'assets/score-card.png';
 const ACTIVE_USER_KEY = 'seismic_active_username_v1';
 const SUPABASE_CONFIG = window.SUPABASE_CONFIG || {};
 const SUPABASE_URL = (SUPABASE_CONFIG.url || '').replace(/\/$/, '');
@@ -652,6 +652,21 @@ function triggerDownloadFromCanvas(canvas, filename) {
   });
 }
 
+function roundedRect(ctx, x, y, w, h, r) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + w - radius, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
+  ctx.lineTo(x + w, y + h - radius);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+  ctx.lineTo(x + radius, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+}
+
 function drawShareCard(ctx, canvas, result, options) {
   const { useTemplate, useBrandWatermark, useTopLogo } = options;
   const baseWidth = 1200;
@@ -669,51 +684,81 @@ function drawShareCard(ctx, canvas, result, options) {
     ctx.drawImage(shareCardBg, dx, dy, drawWidth, drawHeight);
   } else {
     const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    grad.addColorStop(0, '#554148');
-    grad.addColorStop(1, '#000000');
+    grad.addColorStop(0, '#9c7282');
+    grad.addColorStop(1, '#554148');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
+  const overlay = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  overlay.addColorStop(0, 'rgba(248,243,244,0.18)');
+  overlay.addColorStop(1, 'rgba(85,65,72,0.12)');
+  ctx.fillStyle = overlay;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   if (useBrandWatermark && shareLogoBg.complete && shareLogoBg.naturalWidth > 0) {
-    const markWidth = 320;
+    const markWidth = 220;
     const markHeight = Math.round((shareLogoBg.naturalHeight / shareLogoBg.naturalWidth) * markWidth);
-    const markX = (canvas.width - markWidth) / 2;
-    const markY = (canvas.height - markHeight) / 2;
+    const markX = canvas.width - markWidth - 120;
+    const markY = 86;
     ctx.save();
-    ctx.globalAlpha = 0.16;
+    ctx.globalAlpha = 0.08;
     ctx.drawImage(shareLogoBg, markX, markY, markWidth, markHeight);
     ctx.restore();
   }
 
   if (useTopLogo && shareLogo.complete) {
-    ctx.drawImage(shareLogo, 70, 40, 36, 52);
+    ctx.drawImage(shareLogo, 104, 74, 28, 42);
   }
 
-  const x = 90;
-  const maxWidth = 1020;
+  ctx.fillStyle = '#554148';
+  ctx.font = '700 18px Space Grotesk, sans-serif';
+  ctx.fillText('SEISMIC ROAST SCORECARD', 146, 102);
 
-  ctx.fillStyle = '#111111';
-  ctx.font = '800 44px Space Grotesk, sans-serif';
+  const scoreText = result.score || '';
+  const scoreW = Math.ceil(ctx.measureText(scoreText).width) + 34;
+  roundedRect(ctx, 1092 - scoreW, 66, scoreW, 38, 18);
+  ctx.fillStyle = 'rgba(236, 216, 223, 0.62)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(85, 65, 72, 0.65)';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+  ctx.fillStyle = '#554148';
+  ctx.font = '700 18px Space Grotesk, sans-serif';
+  ctx.fillText(scoreText, 1092 - scoreW + 17, 91);
+
+  const x = 96;
+  const maxWidth = 1008;
+
+  ctx.fillStyle = '#554148';
+  ctx.font = '800 54px Space Grotesk, sans-serif';
   const titleLines = getWrappedMultilineLines(ctx, result.title, maxWidth, 2);
-  titleLines.forEach((line, i) => ctx.fillText(line, x, 128 + i * 50));
+  titleLines.forEach((line, i) => ctx.fillText(line, x, 184 + i * 60));
 
-  const scoreY = 128 + titleLines.length * 50 + 8;
-  ctx.fillStyle = '#1f1f1f';
-  ctx.font = '700 30px Space Grotesk, sans-serif';
-  ctx.fillText(result.score, x, scoreY);
+  const bodyY = 236 + titleLines.length * 40;
+  roundedRect(ctx, 90, bodyY, 1020, 226, 20);
+  ctx.fillStyle = 'rgba(248, 243, 244, 0.72)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(85, 65, 72, 0.5)';
+  ctx.lineWidth = 1.1;
+  ctx.stroke();
 
-  const bodyStartY = scoreY + 44;
-  ctx.fillStyle = '#171717';
-  ctx.font = '600 20px Space Grotesk, sans-serif';
-  const bodyLines = getWrappedMultilineLines(ctx, result.body, maxWidth, 9);
-  bodyLines.forEach((line, i) => ctx.fillText(line, x, bodyStartY + i * 28));
+  ctx.fillStyle = '#554148';
+  ctx.font = '600 24px Space Grotesk, sans-serif';
+  const bodyLines = getWrappedMultilineLines(ctx, result.body, 980, 6);
+  bodyLines.forEach((line, i) => ctx.fillText(line, 110, bodyY + 44 + i * 32));
 
-  const seismicStartY = bodyStartY + bodyLines.length * 28 + 18;
-  ctx.fillStyle = '#171717';
-  ctx.font = '700 20px Space Grotesk, sans-serif';
-  const seismicLines = getWrappedMultilineLines(ctx, result.seismic, maxWidth, 3);
-  seismicLines.forEach((line, i) => ctx.fillText(line, x, seismicStartY + i * 28));
+  const seismicY = bodyY + 226 + 34;
+  roundedRect(ctx, 90, seismicY - 30, 1020, 92, 18);
+  ctx.fillStyle = 'rgba(236, 216, 223, 0.58)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(85, 65, 72, 0.45)';
+  ctx.stroke();
+
+  ctx.fillStyle = '#554148';
+  ctx.font = '700 24px Space Grotesk, sans-serif';
+  const seismicLines = getWrappedMultilineLines(ctx, result.seismic, 980, 2);
+  seismicLines.forEach((line, i) => ctx.fillText(line, x, seismicY + i * 34));
 }
 
 function renderResult() {
@@ -886,6 +931,9 @@ landingForm.addEventListener('submit', (event) => {
   showMainView('question');
   renderQuestion();
 });
+
+
+
 
 
 
