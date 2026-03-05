@@ -1,0 +1,282 @@
+:root {
+  --bg: #000000;
+  --card: #1b1417;
+  --card-2: #2a1f24;
+  --text: #fefefe;
+  --muted: #e0c5cf;
+  --line: #554148;
+  --accent: #9c7282;
+  --accent-2: #ce9bae;
+  --danger: #ff5f7a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 10% 10%, #554148 0%, transparent 60%),
+    radial-gradient(900px 500px at 90% 90%, #2a1f24 0%, transparent 60%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Space Grotesk", sans-serif;
+  border-top: 8px solid var(--accent);
+  overflow-x: hidden;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.card {
+  width: min(760px, 100%);
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 24px;
+  background: linear-gradient(160deg, rgba(27, 35, 48, 0.95), rgba(18, 23, 29, 0.95));
+  box-shadow: 0 16px 60px rgba(0, 0, 0, 0.35);
+}
+
+.top h1 {
+  margin: 6px 0 6px;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.brand-logo {
+  width: 30px;
+  height: auto;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.sub {
+  margin: 0;
+  color: var(--muted);
+}
+
+.progress-wrap {
+  margin-top: 20px;
+}
+
+.progress-label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 10px;
+  border-radius: 999px;
+  background: #0d1117;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 20%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width 240ms ease;
+}
+
+#question-view {
+  margin-top: 22px;
+}
+
+.question-title {
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+  margin: 0 0 16px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.option-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.option-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: #131a22;
+  border-radius: 12px;
+  padding: 14px;
+  font: inherit;
+  line-height: 1.35;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.option-btn:hover,
+.option-btn:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  background: #18232d;
+  outline: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.result-head {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin: 0;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.result-body {
+  margin: 14px 0;
+  color: #d3e2f1;
+  line-height: 1.5;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.score {
+  display: inline-block;
+  margin: 4px 0 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(51, 127, 115, 0.18);
+  border: 1px solid rgba(91, 169, 157, 0.65);
+  color: #f3dde6;
+  font-weight: 700;
+}
+
+.seismic {
+  border: 1px dashed #8a6673;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(51, 127, 115, 0.14);
+  color: #f3dee6;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action {
+  flex: 1 1 180px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font: inherit;
+  color: var(--text);
+  background: #111821;
+  cursor: pointer;
+}
+
+.action.primary {
+  border-color: transparent;
+  color: #03110b;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  font-weight: 700;
+}
+
+.action:hover,
+.action:focus-visible {
+  outline: none;
+  border-color: var(--accent-2);
+}
+
+.community-form {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.username-input {
+  flex: 1 1 220px;
+  min-width: 180px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #101319;
+  color: var(--text);
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.username-input:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.community-note {
+  margin: 10px 0 0;
+  color: #f3dde6;
+  font-size: 0.95rem;
+}
+
+
+@media (max-width: 560px) {
+  .app-shell {
+    align-items: start;
+    padding: 12px;
+  }
+
+  .card {
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .sub {
+    font-size: 0.95rem;
+  }
+
+  .progress-label {
+    font-size: 0.82rem;
+  }
+
+  .result-head {
+    font-size: clamp(1.25rem, 6vw, 1.6rem);
+  }
+
+  .score {
+    font-size: 0.92rem;
+  }
+
+  .seismic {
+    font-size: 0.95rem;
+  }
+
+  .action {
+    flex: 1 1 100%;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .card {
+    padding: 14px;
+  }
+
+  .option-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+}
