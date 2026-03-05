@@ -958,8 +958,8 @@ export default function App() {
         {view !== 'result' && (
           <header className="mb-4 md:mb-6">
             <img src="/assets/seismic-icon.svg" alt="Seismic" className="mb-3 h-10 w-auto" />
-            <h1 className="text-4xl font-extrabold text-seismic-50 md:text-5xl">Let’s roast your financial habits 🔥</h1>
-            <p className="mt-1 text-seismic-100/80">5 questions. Brutal honesty. Shareable score card.</p>
+            <h1 className="text-4xl font-extrabold text-seismic-50 md:text-5xl">Your money habits might be public.</h1>
+            <p className="mt-1 text-seismic-100/80">Let's find out.</p>
           </header>
         )}
 
