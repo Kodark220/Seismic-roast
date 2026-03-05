@@ -477,6 +477,64 @@ shareLogoBg.src = 'assets/seismic-icon.svg';
 const shareCardBg = new Image();
 shareCardBg.src = window.SCORE_CARD_DATA_URL || 'assets/score-card.png';
 const ACTIVE_USER_KEY = 'seismic_active_username_v1';
+const SUPABASE_CONFIG = window.SUPABASE_CONFIG || {};
+const SUPABASE_URL = (SUPABASE_CONFIG.url || '').replace(/\/$/, '');
+const SUPABASE_ANON_KEY = SUPABASE_CONFIG.anonKey || '';
+
+function hasSupabaseConfig() {
+  return Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+}
+
+function parsePrivacyScore(scoreText) {
+  const m = /([0-9]+)\/10/.exec(scoreText || '');
+  return m ? Number(m[1]) : null;
+}
+
+async function supabaseInsert(table, payload) {
+  if (!hasSupabaseConfig()) return;
+  const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      Prefer: 'return=minimal'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Supabase insert failed (${response.status})`);
+  }
+}
+
+async function persistUsername(username) {
+  try {
+    await supabaseInsert('roast_users', { username });
+  } catch (error) {
+    console.error('persistUsername failed:', error);
+  }
+}
+
+async function persistQuizResult(username, answers, result) {
+  try {
+    await supabaseInsert('roast_results', {
+      username,
+      pay: answers.pay || null,
+      bnpl: answers.bnpl || null,
+      crypto: answers.crypto || null,
+      wallet: answers.wallet || null,
+      seed: answers.seed || null,
+      roast_title: result.title,
+      privacy_score: parsePrivacyScore(result.score),
+      roast_body: result.body,
+      seismic_line: result.seismic,
+      created_at: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('persistQuizResult failed:', error);
+  }
+}
 
 function showMainView(view) {
   state.mainView = view;
@@ -828,4 +886,7 @@ landingForm.addEventListener('submit', (event) => {
   showMainView('question');
   renderQuestion();
 });
+
+
+
 
